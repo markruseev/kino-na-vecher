@@ -538,7 +538,7 @@ button { font: inherit; color: inherit; }
 
 /* detail tiles */
 .details { margin-top: 48px; display: flex; flex-direction: column; gap: 18px; }
-.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
 .tile { border-radius: var(--r-md); background: var(--surface); transition: background 0.2s; }
 .tile:hover { background: var(--surface-hi); }
 .tile[open] { grid-column: 1 / -1; background: var(--surface); }
@@ -767,3 +767,34 @@ button { font: inherit; color: inherit; }
 .faces { display: flex; margin: 4px 0 2px; }
 .faces .avatar--sm + .avatar--sm { margin-left: -8px; }
 .tile[open] .faces { display: none; }
+
+/* cast row: small actor cards */
+.cast { margin-top: 40px; display: flex; flex-direction: column; gap: 18px; }
+.cast__row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 128px;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+.actor { display: flex; flex-direction: column; gap: 3px; scroll-snap-align: start; min-width: 0; }
+.actor__photo {
+  aspect-ratio: 3 / 4;
+  max-width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+.actor__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.actor__name { font-weight: 600; font-size: 0.92rem; line-height: 1.25; }
+.actor__role { font-size: 0.82rem; color: var(--fg-muted); line-height: 1.3; }
+@media (max-width: 680px) { .cast__row { grid-auto-columns: 108px; gap: 12px; } }

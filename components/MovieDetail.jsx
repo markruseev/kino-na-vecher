@@ -109,6 +109,26 @@ export default function MovieDetail({ movie: m, similar = [] }) {
           <ExpandableText text={c.synopsis} lines={3} />
         </section>
 
+        {m.cast.length > 0 && (
+          <section className="cast" aria-label="В ролях">
+            <h2 className="h2">В ролях</h2>
+            <ul className="cast__row">
+              {m.cast.map((p) => (
+                <li key={p.name_original} className="actor">
+                  <span className="actor__photo" aria-hidden="true">
+                    {p.photo
+                      ? <img src={p.photo} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                      : <span>{initials(p.name_ru)}</span>}
+                  </span>
+                  <span className="actor__name">{p.name_ru}</span>
+                  {p.role && <span className="actor__role">{p.role}</span>}
+                </li>
+              ))}
+            </ul>
+            {m.cast.some((p) => p.photo) && <p className="note">Фото — из Википедии.</p>}
+          </section>
+        )}
+
         {similar.length > 0 && (
           <section className="similar">
             <h2 className="h2">Похожие фильмы</h2>
@@ -121,26 +141,6 @@ export default function MovieDetail({ movie: m, similar = [] }) {
         <section className="details">
           <h2 className="h2">Подробности</h2>
           <div className="tiles">
-          <Section title="В ролях" teaser={castTeaser(m.cast)} preview={<Faces cast={m.cast} />}>
-            <ul className="people">
-              {m.cast.map((p) => (
-                <li key={p.name_original} className="person">
-                  <Avatar person={p} />
-                  <span className="person__text">
-                    <span className="person__name">{p.name_ru}</span>
-                    {p.role && <span className="person__role">{p.role}</span>}
-                    {p.participation_type !== 'актёр' && (
-                      <span className="person__type">{p.participation_type}</span>
-                    )}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            {m.cast.some((p) => p.photo) && (
-              <p className="note">Фото актёров — из Википедии.</p>
-            )}
-          </Section>
-
           <Section title="Съёмочная группа" teaser={`Режиссёр: ${(m.creators.directors || []).join(', ')}`}>
             <dl className="kv">
               {ROLES.map(([key, label]) => {
@@ -226,29 +226,8 @@ function Section({ title, teaser, preview, children }) {
   );
 }
 
-function Avatar({ person: p, size }) {
-  const initials = p.name_ru.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
-  return (
-    <span className={`avatar${size ? ` avatar--${size}` : ''}`} aria-hidden="true">
-      {p.photo
-        ? <img src={p.photo} alt="" loading="lazy" referrerPolicy="no-referrer" />
-        : <span>{initials}</span>}
-    </span>
-  );
-}
-
-// Несколько лиц стопкой в закрытой плитке «В ролях»
-function Faces({ cast }) {
-  return (
-    <span className="faces">
-      {cast.slice(0, 4).map((p) => <Avatar key={p.name_original} person={p} size="sm" />)}
-    </span>
-  );
-}
-
-function castTeaser(cast) {
-  const names = cast.slice(0, 2).map((p) => p.name_ru).join(', ');
-  return cast.length > 2 ? `${names} и ещё ${cast.length - 2}` : names;
+function initials(name) {
+  return name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
 }
 
 function cap(t) {
