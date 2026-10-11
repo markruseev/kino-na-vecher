@@ -841,3 +841,7 @@ button { font: inherit; color: inherit; }
 
 .pick .btn--ghost { background: var(--bg); }
 .pick .btn--ghost:hover { background: var(--surface-hi); }
+
+/* For You: both buttons exactly the same height */
+.pick__actions .btn { height: 44px; min-height: 44px; line-height: 1; padding-block: 0; box-sizing: border-box; border: 0; }
+.pick__actions .btn svg { flex: none; display: block; }
