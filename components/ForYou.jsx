@@ -5,6 +5,7 @@ import { posterUrl } from '../lib/paths';
 import { useUser, recommend } from '../lib/user';
 import { formatRuntime, formatRating } from '../lib/format';
 import { IconStar, IconBack } from './Icons';
+import { useDragScroll } from '../lib/dragScroll';
 import { Reactions } from './SaveButton';
 
 export default function ForYou({ movies }) {
@@ -19,6 +20,7 @@ export default function ForYou({ movies }) {
   const { personal, picks } = recommend(pool, u, 6);
   const track = useRef(null);
   const [pos, setPos] = useState(0);
+  useDragScroll(track);
 
   useEffect(() => {
     const el = track.current;
@@ -77,7 +79,7 @@ export default function ForYou({ movies }) {
         </div>
       )}
 
-      <ul className="foryou__list" ref={track}>
+      <ul className="foryou__list drag-scroll" ref={track}>
         {picks.map(({ movie: m, reason }) => (
           <li key={m.id} className="pick">
             <Link href={`/movie/${m.id}`} className="pick__poster" tabIndex={-1} aria-hidden="true">

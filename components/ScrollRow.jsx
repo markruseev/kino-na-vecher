@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { IconBack } from './Icons';
+import { useDragScroll } from '../lib/dragScroll';
 
 // Горизонтальная лента без видимой полосы прокрутки, с круглыми стрелками у заголовка
 export default function ScrollRow({ title, listClass, children, footer }) {
   const ref = useRef(null);
   const [edges, setEdges] = useState({ start: true, end: false });
+  useDragScroll(ref);
 
   useEffect(() => {
     const el = ref.current;
@@ -45,7 +47,7 @@ export default function ScrollRow({ title, listClass, children, footer }) {
           </div>
         )}
       </div>
-      <ul className={`no-scrollbar ${listClass}`} ref={ref}>{children}</ul>
+      <ul className={`no-scrollbar drag-scroll ${listClass}`} ref={ref}>{children}</ul>
       {footer}
     </>
   );

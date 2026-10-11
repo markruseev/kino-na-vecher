@@ -828,3 +828,13 @@ button { font: inherit; color: inherit; }
 
 .tile__sub { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); font-weight: 500; margin-top: 4px; }
 .tile .prose { max-width: 70ch; }
+
+/* mouse drag / wheel on horizontal rows */
+@media (hover: hover) and (pointer: fine) {
+  .drag-scroll { cursor: grab; }
+  .drag-scroll.is-dragging { cursor: grabbing; }
+  .drag-scroll.is-dragging * { pointer-events: none; }
+}
+.drag-scroll.is-scrolling { scroll-snap-type: none; }
+.drag-scroll img { -webkit-user-drag: none; user-select: none; }
+.drag-scroll.is-dragging { user-select: none; }
