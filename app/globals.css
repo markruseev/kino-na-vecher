@@ -693,7 +693,8 @@ button { font: inherit; color: inherit; }
   .pick { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 12px; }
   .pick__poster { max-width: 100%; }
   .pick__poster img { aspect-ratio: 4 / 3; object-position: center 25%; }
-  .foryou__nav { display: none; }
+  .foryou__count { display: none; }
+  .foryou__head { flex-wrap: nowrap; align-items: flex-start; }
   .pick__body { padding-block: 2px; gap: 8px; }
   .pick__actions .btn { flex: 1 1 100%; }
   .pick__reason { font-size: 0.78rem; }
@@ -801,9 +802,11 @@ button { font: inherit; color: inherit; }
   gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-bottom: 8px;
-  scrollbar-width: thin;
 }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.row-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.row-nav { display: flex; gap: 8px; }
 .actor { display: flex; flex-direction: column; gap: 3px; scroll-snap-align: start; min-width: 0; }
 .actor__photo {
   aspect-ratio: 3 / 4;

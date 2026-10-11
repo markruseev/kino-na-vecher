@@ -11,6 +11,7 @@ import {
   IconBack, IconPlay, IconStar, IconArrow,
 } from './Icons';
 import HeroBackdrop from './HeroBackdrop';
+import ScrollRow from './ScrollRow';
 import ExpandableText from './ExpandableText';
 
 const ROLES = [
@@ -111,8 +112,11 @@ export default function MovieDetail({ movie: m, similar = [] }) {
 
         {m.cast.length > 0 && (
           <section className="cast" aria-label="В ролях">
-            <h2 className="h2">В ролях</h2>
-            <ul className="cast__row">
+            <ScrollRow
+              title="В ролях"
+              listClass="cast__row"
+              footer={m.cast.some((p) => p.photo) && <p className="note">Фото — из Википедии.</p>}
+            >
               {m.cast.map((p) => (
                 <li key={p.name_original} className="actor">
                   <span className="actor__photo" aria-hidden="true">
@@ -123,8 +127,7 @@ export default function MovieDetail({ movie: m, similar = [] }) {
                   <span className="actor__name">{p.name_ru}</span>
                 </li>
               ))}
-            </ul>
-            {m.cast.some((p) => p.photo) && <p className="note">Фото — из Википедии.</p>}
+            </ScrollRow>
           </section>
         )}
 
