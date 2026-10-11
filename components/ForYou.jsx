@@ -33,6 +33,27 @@ export default function ForYou({ movies }) {
     return () => el.removeEventListener('scroll', on);
   }, [picks.length]);
 
+  // Карточка, которая сейчас не в фокусе: клик по ней только перелистывает к ней
+  const isCurrent = (li) => {
+    const el = track.current;
+    if (!el || !li) return true;
+    const base = el.firstElementChild?.offsetLeft || 0;
+    return Math.abs(li.offsetLeft - base - el.scrollLeft) < 12;
+  };
+  const goTo = (li) => {
+    const el = track.current;
+    if (!el) return;
+    const base = el.firstElementChild?.offsetLeft || 0;
+    el.scrollTo({ left: li.offsetLeft - base, behavior: 'smooth' });
+  };
+  const onSlideClick = (e) => {
+    const li = e.currentTarget;
+    if (isCurrent(li)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    goTo(li);
+  };
+
   const go = (dir) => {
     const el = track.current;
     if (!el) return;
@@ -80,8 +101,8 @@ export default function ForYou({ movies }) {
       )}
 
       <ul className="foryou__list drag-scroll" ref={track}>
-        {picks.map(({ movie: m, reason }) => (
-          <li key={m.id} className="pick">
+        {picks.map(({ movie: m, reason }, i) => (
+          <li key={m.id} className={`pick${i !== pos ? ' pick--peek' : ''}`} onClickCapture={onSlideClick}>
             <Link href={`/movie/${m.id}`} className="pick__poster" tabIndex={-1} aria-hidden="true">
               <img src={posterUrl(m.id)} alt="" width={800} height={1200} />
             </Link>

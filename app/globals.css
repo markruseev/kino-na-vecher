@@ -871,3 +871,8 @@ button { font: inherit; color: inherit; }
   border: 0; pointer-events: none;
 }
 @media (prefers-reduced-motion: reduce) { .yt-frame { display: none; } }
+
+/* For You: a card that isn't in focus scrolls into view on click instead of opening */
+.pick--peek { cursor: pointer; }
+.pick--peek .pick__body { opacity: 0.55; transition: opacity 0.3s; }
+.pick { transition: opacity 0.3s; }
