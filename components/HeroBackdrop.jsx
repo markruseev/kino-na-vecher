@@ -1,8 +1,9 @@
 import { posterUrl, EMBEDS_ALLOWED } from '../lib/paths';
+import YouTubeBackdrop from './YouTubeBackdrop';
 
 // Фон шапки фильма. Источник выбирается по тому, что есть в movies.json:
 //   media.trailer_mp4        — путь к видеофайлу в public/, крутится без звука по кругу
-//   media.trailer_youtube_id — id ролика YouTube, встраивается без звука по кругу
+//   media.trailer_youtube_id — id ролика YouTube, см. YouTubeBackdrop.jsx
 //   media.stills             — массив путей к кадрам в public/, плавно сменяют друг друга
 // Трейлер стартует с TRAILER_START секунды, чтобы пропустить заставки студий.
 // Если ничего из этого нет, используется размытый постер с медленным движением.
@@ -20,13 +21,7 @@ export default function HeroBackdrop({ movie }) {
   }
 
   if (media.trailer_youtube_id && EMBEDS_ALLOWED) {
-    const yt = media.trailer_youtube_id;
-    const src = `https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&mute=1&start=${TRAILER_START}&loop=1&playlist=${yt}&controls=0&playsinline=1&modestbranding=1&rel=0`;
-    return (
-      <div className="backdrop backdrop--media" aria-hidden="true">
-        <iframe src={src} title="Трейлер" allow="autoplay; encrypted-media" tabIndex={-1} />
-      </div>
-    );
+    return <YouTubeBackdrop movieId={movie.id} videoId={media.trailer_youtube_id} />;
   }
 
   if (media.stills?.length) {

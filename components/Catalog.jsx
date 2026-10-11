@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from '../lib/link';
+import { warmUpYouTube } from '../lib/youtube';
+import { EMBEDS_ALLOWED } from '../lib/paths';
 import { useUser } from '../lib/user';
 import { KIND_LABEL, plural } from '../lib/format';
 import Toolbar from './Toolbar';
@@ -36,6 +38,9 @@ export default function Catalog({ movies, mode = 'all' }) {
   const btnRef = useRef(null);
 
   const set = (patch) => setF((cur) => ({ ...cur, ...patch }));
+
+  // Пока человек выбирает фильм, заранее готовим плеер трейлеров
+  useEffect(() => { if (EMBEDS_ALLOWED) warmUpYouTube(); }, []);
 
   useEffect(() => {
     if (!open) return undefined;
