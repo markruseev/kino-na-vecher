@@ -1,9 +1,10 @@
 'use client';
+import { useRef, useState, useEffect } from 'react';
 import Link from '../lib/link';
 import { posterUrl } from '../lib/paths';
 import { useUser, recommend } from '../lib/user';
 import { formatRuntime, formatRating } from '../lib/format';
-import { IconStar } from './Icons';
+import { IconStar, IconBack } from './Icons';
 import { Reactions } from './SaveButton';
 
 export default function ForYou({ movies }) {
@@ -15,19 +16,52 @@ export default function ForYou({ movies }) {
     .find((m) => m && !u.reactions[m.id] && !u.skipped.includes(m.id));
 
   const pool = ask ? movies.filter((m) => m.id !== ask.id) : movies;
-  const { personal, picks } = recommend(pool, u, 2);
+  const { personal, picks } = recommend(pool, u, 6);
+  const track = useRef(null);
+  const [pos, setPos] = useState(0);
+
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return undefined;
+    const on = () => {
+      const w = el.firstElementChild?.getBoundingClientRect().width || 1;
+      setPos(Math.round(el.scrollLeft / (w + 16)));
+    };
+    el.addEventListener('scroll', on, { passive: true });
+    return () => el.removeEventListener('scroll', on);
+  }, [picks.length]);
+
+  const go = (dir) => {
+    const el = track.current;
+    if (!el) return;
+    const w = el.firstElementChild?.getBoundingClientRect().width || 0;
+    el.scrollBy({ left: dir * (w + 16), behavior: 'smooth' });
+  };
 
   if (!picks.length && !ask) return null;
 
   return (
     <section className="foryou" aria-label="Для вас">
       <div className="foryou__head">
-        <h2 className="h2">Для вас</h2>
-        <p className="muted">
+        <div className="foryou__titles">
+          <h2 className="h2">Для вас</h2>
+          <p className="muted">
           {personal
             ? 'Подобрано по вашим оценкам, сохранениям и просмотрам'
             : 'Пока вы ничего не оценили, показываем лучшее. Оценивайте фильмы, и подборка подстроится'}
-        </p>
+          </p>
+        </div>
+        {picks.length > 1 && (
+          <div className="foryou__nav">
+            <span className="foryou__count">{Math.min(pos + 1, picks.length)} / {picks.length}</span>
+            <button type="button" className="round-btn round-btn--sm" aria-label="Предыдущий фильм" onClick={() => go(-1)} disabled={pos <= 0}>
+              <IconBack />
+            </button>
+            <button type="button" className="round-btn round-btn--sm round-btn--flip" aria-label="Следующий фильм" onClick={() => go(1)} disabled={pos >= picks.length - 1}>
+              <IconBack />
+            </button>
+          </div>
+        )}
       </div>
 
       {ask && (
@@ -43,7 +77,7 @@ export default function ForYou({ movies }) {
         </div>
       )}
 
-      <ul className="foryou__list">
+      <ul className="foryou__list" ref={track}>
         {picks.map(({ movie: m, reason }) => (
           <li key={m.id} className="pick">
             <Link href={`/movie/${m.id}`} className="pick__poster" tabIndex={-1} aria-hidden="true">

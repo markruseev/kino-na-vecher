@@ -121,7 +121,6 @@ export default function MovieDetail({ movie: m, similar = [] }) {
                       : <span>{initials(p.name_ru)}</span>}
                   </span>
                   <span className="actor__name">{p.name_ru}</span>
-                  {p.role && <span className="actor__role">{p.role}</span>}
                 </li>
               ))}
             </ul>
@@ -156,6 +155,23 @@ export default function MovieDetail({ movie: m, similar = [] }) {
             </dl>
             {m.creators.credit_notes && <p className="note">{m.creators.credit_notes}</p>}
           </Section>
+
+          {m.context?.text && (
+            <Section
+              title="Контекст и факты"
+              teaser={m.context.facts?.[0]?.text || `${m.context.facts?.length || 0} ${plural(m.context.facts?.length || 0, 'факт', 'факта', 'фактов')}`}
+            >
+              <p className="prose">{m.context.text}</p>
+              {m.context.facts?.length > 0 && (
+                <>
+                  <h3 className="tile__sub">Интересные факты</h3>
+                  <ul className="facts">
+                    {m.context.facts.map((x) => <li key={x.text}>{x.text}</li>)}
+                  </ul>
+                </>
+              )}
+            </Section>
+          )}
 
           {awards.length > 0 && (
             <Section title="Награды" teaser={wins ? `${wins} ${plural(wins, 'победа', 'победы', 'побед')}` : `${awards.length} ${plural(awards.length, 'номинация', 'номинации', 'номинаций')}`}>
@@ -227,7 +243,8 @@ function Section({ title, teaser, preview, children }) {
 }
 
 function initials(name) {
-  return name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
+  const w = name.split(/\s+/).filter(Boolean);
+  return ((w[0]?.[0] || '') + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase();
 }
 
 function cap(t) {
