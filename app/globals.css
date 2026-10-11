@@ -696,7 +696,7 @@ button { font: inherit; color: inherit; }
   .foryou__count { display: none; }
   .foryou__head { flex-wrap: nowrap; align-items: flex-start; }
   .pick__body { padding-block: 2px; gap: 8px; }
-  .pick__actions .btn { flex: 1 1 100%; }
+  .pick__actions .btn { flex: 1 1 auto; }
   .pick__reason { font-size: 0.78rem; }
   .pick__title { font-size: 1.35rem; }
   .pick__logline { font-size: 0.95rem; }
@@ -838,3 +838,6 @@ button { font: inherit; color: inherit; }
 .drag-scroll.is-scrolling { scroll-snap-type: none; }
 .drag-scroll img { -webkit-user-drag: none; user-select: none; }
 .drag-scroll.is-dragging { user-select: none; }
+
+.pick .btn--ghost { background: var(--bg); }
+.pick .btn--ghost:hover { background: var(--surface-hi); }

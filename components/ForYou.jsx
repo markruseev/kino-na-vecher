@@ -4,7 +4,7 @@ import Link from '../lib/link';
 import { posterUrl } from '../lib/paths';
 import { useUser, recommend } from '../lib/user';
 import { formatRuntime, formatRating } from '../lib/format';
-import { IconStar, IconBack } from './Icons';
+import { IconStar, IconBack, IconPlay } from './Icons';
 import { useDragScroll } from '../lib/dragScroll';
 import { Reactions } from './SaveButton';
 
@@ -103,7 +103,12 @@ export default function ForYou({ movies }) {
               <p className="pick__logline">{m.logline}</p>
               <div className="pick__actions">
                 <Link href={`/movie/${m.id}`} className="btn btn--primary btn--sm">Подробнее</Link>
-                <Reactions id={m.id} size="sm" />
+                {m.trailer && (
+                  <a className="btn btn--ghost btn--sm pick__trailer" href={m.trailer} target="_blank" rel="noreferrer">
+                    <IconPlay width={14} height={14} />
+                    Смотреть трейлер
+                  </a>
+                )}
               </div>
             </div>
           </li>
