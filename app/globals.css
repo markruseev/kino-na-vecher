@@ -854,8 +854,8 @@ button { font: inherit; color: inherit; }
 .backdrop--yt { container-type: size; }
 .yt-frame {
   position: absolute; left: 50%; top: 50%;
-  /* 16:9, покрывает блок с запасом 30% — плашки YouTube по краям уходят за кадр */
-  width: max(130cqw, calc(130cqh * 16 / 9));
+  /* 16:9, покрывает шапку как раньше и чуть с запасом, чтобы плашки YouTube по краям ушли за кадр */
+  width: max(112cqw, calc(112cqh * 16 / 9));
   aspect-ratio: 16 / 9;
   transform: translate(-50%, -50%);
   opacity: 0;
@@ -863,5 +863,11 @@ button { font: inherit; color: inherit; }
   pointer-events: none;
 }
 .yt-frame--on { opacity: 1; }
-.yt-frame > div, .yt-frame iframe { position: absolute; inset: 0; width: 100% !important; height: 100% !important; border: 0; pointer-events: none; }
+.backdrop--yt .yt-frame > div,
+.backdrop--yt .yt-frame iframe {
+  position: absolute; inset: 0; left: 0; top: 0;
+  width: 100% !important; height: 100% !important;
+  min-width: 0; min-height: 0; transform: none;
+  border: 0; pointer-events: none;
+}
 @media (prefers-reduced-motion: reduce) { .yt-frame { display: none; } }
