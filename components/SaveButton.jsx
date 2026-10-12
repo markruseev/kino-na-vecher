@@ -5,13 +5,13 @@ import {
   IconBookmark, IconHeart, IconHeartBroken, IconHearts,
 } from './Icons';
 
-export default function SaveButton({ id }) {
+export default function SaveButton({ id, primary = false }) {
   const { isSaved, toggleSave } = useUser();
   const saved = isSaved(id);
   return (
     <button
       type="button"
-      className={`btn ${saved ? 'btn--saved' : 'btn--primary'}`}
+      className={`btn ${saved ? 'btn--saved' : primary ? 'btn--primary' : 'btn--ghost'}`}
       aria-pressed={saved}
       onClick={() => toggleSave(id)}
     >

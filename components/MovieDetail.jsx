@@ -89,13 +89,13 @@ export default function MovieDetail({ movie: m, similar = [] }) {
               <p className="film__logline">{c.logline}</p>
 
               <div className="film__actions">
-                <SaveButton id={m.id} />
                 {trailerUrl && (
-                  <a className="btn btn--ghost" href={trailerUrl} target="_blank" rel="noreferrer">
+                  <a className="btn btn--primary" href={trailerUrl} target="_blank" rel="noreferrer">
                     <IconPlay width={16} height={16} />
                     Трейлер
                   </a>
                 )}
+                <SaveButton id={m.id} primary={!trailerUrl} />
               </div>
 
               <RateBar id={m.id} />
